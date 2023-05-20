@@ -5,6 +5,7 @@ from sklearn.svm import SVC as SVM
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression as lr
 #import secure_filename
+import phishing_detection
 from flask import jsonify
 
 #Get result
