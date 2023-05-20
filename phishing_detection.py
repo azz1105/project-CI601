@@ -4,6 +4,7 @@ from sklearn.ensemble import RandomForestClassifier as rfc
 from sklearn.svm import SVC as SVM
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression as lr
+#import secure_filename
 from flask import jsonify
 
 
@@ -13,27 +14,27 @@ def getResult(URL):
     data = np.loadtxt("dataset.csv", delimiter = ",")
 
     #Seperating features and labels
-    X = data[: , :-1]
-    y = data[: , -1]
+    A = data[: , :-1]
+    B = data[: , -1]
 
     #Seperating training features, testing features, training labels & testing labels
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2)
+    A_train, A_test, B_train, B_test = train_test_split(A, B, test_size = 0.2)
     clf = rfc()
     clf = SVM()
     clf = lr()
     
-    clf.fit(X_train, y_train)
-    score = clf.score(X_test, y_test)
+    clf.fit(A_train, B_train)
+    score = clf.score(A_test, B_test)
     print(score*100)
 
-    X_new = []
+    A_new = []
 
-    X_input = URL
-    X_new=feature_extraction.generate_data_set(X_input)
-    X_new = np.array(X_new).reshape(1,-1)
+    A_input = URL
+    A_new=feature_extraction.generate_data_set(A_input)
+    A_new = np.array(A_new).reshape(1,-1)
 
     try:
-        prediction = clf.predict(X_new)
+        prediction = clf.predict(A_new)
         if prediction == -1:
             return "Phishing URL"
         else:
