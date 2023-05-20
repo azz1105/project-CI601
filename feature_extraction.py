@@ -11,7 +11,7 @@ import time
 from dateutil.parser import parse as date_parse
 
 
-# Calculates number of months
+# Months_calculating
 def diff_month(d1, d2):
     return (d1.year - d2.year) * 12 + d1.month - d2.month
 
@@ -52,14 +52,14 @@ def generate_data_set(URL):
     except:
         global_rank = -1
 
-    # 1.having_IP_Address
+    # 1.Has_IP_Address
     try:
         ipaddress.ip_address(URL)
         data_set.append(-1)
     except:
         data_set.append(1)
 
-    # 2.URL_Length
+    # 2.Length of_URL
     if len(URL) < 54:
         data_set.append(1)
     elif len(URL) >= 54 and len(URL) <= 75:
@@ -67,7 +67,7 @@ def generate_data_set(URL):
     else:
         data_set.append(-1)
 
-    # 3.Shortining_Service
+    # 3.uses_shorting_Service
     match=re.search('bit\.ly|goo\.gl|shorte\.st|go2l\.ink|x\.co|ow\.ly|t\.co|tinyurl|tr\.im|is\.gd|cli\.gs|'
                     'yfrog\.com|migre\.me|ff\.im|tiny\.cc|url4\.eu|twit\.ac|su\.pr|twurl\.nl|snipurl\.com|'
                     'short\.to|BudURL\.com|ping\.fm|post\.ly|Just\.as|bkite\.com|snipr\.com|fic\.kr|loopt\.us|'
@@ -80,26 +80,26 @@ def generate_data_set(URL):
     else:
         data_set.append(1)
 
-    # 4.having_At_Symbol
+    # 4.has_At_Symbol
     if re.findall("@", URL):
         data_set.append(-1)
     else:
         data_set.append(1)
 
-    # 5.double_slash_redirecting
+    # 5.Has_double_slash_redirecting
     list=[x.start(0) for x in re.finditer('//', URL)]
     if list[len(list)-1]>6:
         data_set.append(-1)
     else:
         data_set.append(1)
 
-    # 6.Prefix_Suffix
+    # 6.Has_prefix_Suffix
     if re.findall(r"https?://[^\-]+-[^\-]+/", URL):
         data_set.append(-1)
     else:
         data_set.append(1)
 
-    # 7.having_Sub_Domain
+    # 7.Has_Sub_Domain
     if len(re.findall("\.", URL)) == 1:
         data_set.append(1)
     elif len(re.findall("\.", URL)) == 2:
@@ -107,14 +107,14 @@ def generate_data_set(URL):
     else:
         data_set.append(-1)
 
-    # 8.SSLfinal_State
+    # 8.ssl_State
     try:
         if response.text:
             data_set.append(1)
     except:
         data_set.append(-1)
 
-    # 9.Domain_registeration_length
+    # 9.domain_reg_length
     expiration_date = whois_response.expiration_date
     registration_length = 0
     try:
@@ -130,7 +130,7 @@ def generate_data_set(URL):
     except:
         data_set.append(-1)
 
-    # 10.Favicon
+    # 10.Has_favicon
     if soup == -999:
         data_set.append(-1)
     else:
@@ -147,7 +147,7 @@ def generate_data_set(URL):
         except StopIteration:
             pass
 
-    #11. port
+    #11. Uses_port
     try:
         port = domain.split(":")[1]
         if port:
@@ -157,13 +157,13 @@ def generate_data_set(URL):
     except:
         data_set.append(1)
 
-    #12. HTTPS_token
+    #12. Has_HTTPS_token
     if re.findall(r"^https://", URL):
         data_set.append(1)
     else:
         data_set.append(-1)
 
-    #13. Request_URL
+    #13. Uses_Request_URL
     i = 0
     success = 0
     if soup == -999:
@@ -206,7 +206,7 @@ def generate_data_set(URL):
 
 
 
-    #14. URL_of_Anchor
+    #14. Has_URL_of_Anchor
     percentage = 0
     i = 0
     unsafe=0
@@ -214,8 +214,7 @@ def generate_data_set(URL):
         data_set.append(-1)
     else:
         for a in soup.find_all('a', href=True):
-        # 2nd condition was 'JavaScript ::void(0)' but we put JavaScript because the space between javascript and :: might not be
-                # there in the actual a['href']
+       
             if "#" in a['href'] or "javascript" in a['href'].lower() or "mailto" in a['href'].lower() or not (URL in a['href'] or domain in a['href']):
                 unsafe = unsafe + 1
             i = i + 1
@@ -233,7 +232,7 @@ def generate_data_set(URL):
         else:
             data_set.append(-1)
 
-    #15. Links_in_tags
+    #15. Has_Links_in_tags
     i=0
     success =0
     if soup == -999:
@@ -274,7 +273,7 @@ def generate_data_set(URL):
                  data_set.append(1)
                  break
 
-    #17. Submitting_to_email
+    #17. Submits_to_email
     if response == "":
         data_set.append(-1)
     else:
@@ -283,7 +282,7 @@ def generate_data_set(URL):
         else:
             data_set.append(-1)
 
-    #18. Abnormal_URL
+    #18.  Has_Abnormal_URL
     if response == "":
         data_set.append(-1)
     else:
@@ -292,7 +291,7 @@ def generate_data_set(URL):
         else:
             data_set.append(-1)
 
-    #19. Redirect
+    #19.Has_Redirect
     if response == "":
         data_set.append(-1)
     else:
@@ -303,7 +302,7 @@ def generate_data_set(URL):
         else:
             data_set.append(1)
 
-    #20. on_mouseover
+    #20. Has_on_mouseover
     if response == "" :
         data_set.append(-1)
     else:
@@ -312,7 +311,7 @@ def generate_data_set(URL):
         else:
             data_set.append(-1)
 
-    #21. RightClick
+    #21. Allows_RightClick
     if response == "":
         data_set.append(-1)
     else:
@@ -321,7 +320,7 @@ def generate_data_set(URL):
         else:
             data_set.append(-1)
 
-    #22. popUpWidnow
+    #22. Has_popUpWidnow
     if response == "":
         data_set.append(-1)
     else:
@@ -330,7 +329,7 @@ def generate_data_set(URL):
         else:
             data_set.append(-1)
 
-    #23. Iframe
+    #23. Has_Iframe
     if response == "":
         data_set.append(-1)
     else:
@@ -339,7 +338,7 @@ def generate_data_set(URL):
         else:
             data_set.append(-1)
 
-    #24. age_of_domain
+    #24. Domain_age
     if response == "":
         data_set.append(-1)
     else:
@@ -352,7 +351,7 @@ def generate_data_set(URL):
         except:
             data_set.append(1)
 
-    #25. DNSRecord
+    #25. Has_DNSRecord
     dns = 1
     try:
         dns = whois.whois(domain)
@@ -366,7 +365,7 @@ def generate_data_set(URL):
         else:
             data_set.append(1)
 
-    #26. web_traffic
+    #26. Has_web_traffic
     try:
         if global_rank> 0 and global_rank < 100000:
             data_set.append(-1)
@@ -377,7 +376,7 @@ def generate_data_set(URL):
 
     
 
-    #27. Page_Rank
+    #27. page_Rank
     try:
         if global_rank > 0 and global_rank < 100000:
             data_set.append(-1)
@@ -386,14 +385,14 @@ def generate_data_set(URL):
     except:
         data_set.append(1)
 
-    #28. Google_Index
+    #28. _Google_Indexed
     site=search(URL, 5)
     if site:
         data_set.append(1)
     else:
         data_set.append(-1)
 
-    #29. Links_pointing_to_page
+    #29. Has_Links_pointing_to_page
     if response == "":
         data_set.append(-1)
     else:
@@ -405,7 +404,7 @@ def generate_data_set(URL):
         else:
             data_set.append(-1)
 
-    #30. Statistical_report
+    #30. Has_Statistical_report
     URL_match=re.search('at\.ua|usa\.cc|baltazarpresentes\.com\.br|pe\.hu|esy\.es|hol\.es|sweddy\.com|myjino\.ru|96\.lt|ow\.ly',URL)
     try:
         ip_address=socket.gethostbyname(domain)
