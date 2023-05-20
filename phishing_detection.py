@@ -7,7 +7,7 @@ from sklearn.linear_model import LogisticRegression as lr
 #import secure_filename
 from flask import jsonify
 
-
+#Get result
 def getResult(URL):
 
     #Importing dataset
