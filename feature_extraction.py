@@ -42,14 +42,23 @@ def generate_data_set(URL):
     # Requests all the information about the domain
     whois_response = whois.whois(domain)
 
-    rank_checker_response = requests.post("https://www.checkpagerank.net/index.php", {
-        "name": domain
-    })
-
-    # Extracts global rank of the website
     try:
-        global_rank = int(re.findall(r"Global Rank: ([0-9]+)", rank_checker_response.text)[0])
+        url = 'https://openpagerank.com/api/v1.0/getPageRank'
+        params = {
+            'domains': [
+                domain
+            ]
+        }
+        query = requests.get(url, params=params)
+        query.headers.update({'API-OPR': '0ckggosc4c08os4ow4o0wggcs4cckoccscksc0s8'})
+        response = requests.get(query.url, headers=query.headers)
+        output = response.json()
+        print(output)
+        global_rank = output["response"][0]["page_rank_decimal"]
     except:
+        global_rank = -1
+        
+    if global_rank == 0:
         global_rank = -1
 
     # 1.Has_IP_Address
